@@ -1,7 +1,9 @@
 package com.redditclone.service;
 
 
+import com.redditclone.model.Provider;
 import com.redditclone.model.User;
+import com.redditclone.repository.ProviderRepository;
 import com.redditclone.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +23,7 @@ import static java.util.Collections.singletonList;
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
+    private final ProviderRepository providerRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,6 +38,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.isEnabled(), true, true,
                 true, getAuthorities("USER"));
     }
+
+    public UserDetails loadUserByProviderName(String providerName) {
+        Optional<Provider> providerOptional = providerRepository.findByProviderName(providerName);
+        Provider provider = providerOptional
+                .orElseThrow(() -> new UsernameNotFoundException("No provider " +
+                        "Found with username : " + providerOptional));
+
+        return new org.springframework.security
+                .core.userdetails.User(provider.getProviderName(), provider.getPassword(),
+                provider.isEnabled(), true, true,
+                true, getAuthorities("PROVIDER"));
+
+    }
+
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
         return singletonList(new SimpleGrantedAuthority(role));

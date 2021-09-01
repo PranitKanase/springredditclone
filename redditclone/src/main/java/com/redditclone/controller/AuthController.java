@@ -23,14 +23,32 @@ public class AuthController {
                 "User Registration successful", HttpStatus.OK);
     }
 
+    @PostMapping("/signup-provider")
+    public ResponseEntity<String> signupProvider(@RequestBody RegisterRequest registerRequest) {
+        authService.signupProvider(registerRequest);
+        return new ResponseEntity<>(
+                "Provider Registration successful", HttpStatus.OK);
+    }
+
     @GetMapping("accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
     }
 
+    @GetMapping("accountVerification/provider/{token}")
+    public ResponseEntity<String> verifyAccountProvider(@PathVariable String token) {
+        authService.verifyAccountProvider(token);
+        return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
+    }
+
+    @PostMapping("/login/provider")
+    public AuthenticationResponse loginProvider(@RequestBody LoginRequest loginRequest) {
+        return authService.loginProvider(loginRequest);
     }
 }

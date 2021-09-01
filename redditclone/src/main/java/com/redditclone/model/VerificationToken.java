@@ -30,5 +30,7 @@ public class VerificationToken {
     private String token;
     @OneToOne(fetch = LAZY)
     private User user;
+    @OneToOne(fetch = LAZY)
+    private Provider provider;
     private Instant expiryDate;
 }

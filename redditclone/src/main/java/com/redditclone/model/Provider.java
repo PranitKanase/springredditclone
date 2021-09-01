@@ -10,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,12 +17,13 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class Provider {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long userId;
+    private Long providerId;
     @NotBlank(message = "Username is required")
-    private String username;
+    private String providerName;
     @NotBlank(message = "Password is required")
     private String password;
     @Email
@@ -31,5 +31,4 @@ public class User {
     private String email;
     private Instant created;
     private boolean enabled;
-
 }
